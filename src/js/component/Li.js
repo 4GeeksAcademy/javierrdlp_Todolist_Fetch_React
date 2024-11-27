@@ -5,8 +5,9 @@ const Li = ({ toDo, id, getTodos }) => {
         "position-absolute top-50 end-0 translate-middle-y me-2 text-danger-emphasis d-none"
     );
 
-    function borrarTodo(idTodo){
-        fetch("https://playground.4geeks.com/todo/todos/" + idTodo,{
+    async function borrarTodo(idTodo){
+
+        await fetch("https://playground.4geeks.com/todo/todos/" + idTodo,{
 			method: "DELETE",			
 			headers: {
 				'Content-Type': 'application/json'
@@ -15,12 +16,12 @@ const Li = ({ toDo, id, getTodos }) => {
 		.then((response) => {
 			return response.json()
 		})
-		.then((data) => {
-            getTodos()
-            console.log(data)
-            
+		.then((data) => {           
+            console.log(data)            
         })
 		.catch((err) => {err})
+
+        getTodos()
 
     }   
 

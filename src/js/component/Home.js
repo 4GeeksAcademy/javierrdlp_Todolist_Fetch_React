@@ -56,7 +56,24 @@ const Home = () => {
 			.catch((err) => { err })
 	};
 
-
+	async function deleteAll() {
+		for (let i = 0; i < listTodo.length; i++) {
+			const id = listTodo[i].id;	
+			
+				await fetch(
+					`https://playground.4geeks.com/todo/todos/${id}`,
+					{
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+						},
+					}
+				);				
+			
+		}	
+		
+		getTodos();
+	}
 
 
 	return (
@@ -93,6 +110,9 @@ const Home = () => {
 							<span className="fw-light fst-italic text-danger-emphasis fw-bold" style={{ fontSize: "12px" }}>{listTodo.length} items left</span>
 						</li>
 					</ul>
+					<button className="btn btn-danger" onClick={
+						() => {deleteAll(listTodo.length-1)}
+					}>Delete tasks</button>
 				</div>
 				<div className="col-4" />
 			</div>
