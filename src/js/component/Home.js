@@ -21,14 +21,14 @@ const Home = () => {
 		const arrayTodos = []
 		data.todos.forEach(element => {
 			console.log(element)
-			arrayTodos.push(element.label)
+			arrayTodos.push({ label : element.label, id : element.id})
 		});
 		
 		setListTodo(arrayTodos)
 	})
 	.catch((err) => {err})
 
-		}, []);
+		}, [newTodo]);
 
 	function postToDo(task){
 		
@@ -84,7 +84,7 @@ const Home = () => {
 							</li>
 						) : (
 							listTodo.map((value, index) => (
-								<Li key={index} toDo={value} index={index} setListToDo={setListTodo} />
+								<Li key={index} toDo={value.label} index={index} setListToDo={setListTodo} id={value.id} />
 							))
 						)}
 						<li className="list-group-item">
