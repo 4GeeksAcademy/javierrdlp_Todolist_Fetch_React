@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-const Li = ({ toDo, index, setListToDo, id }) => {
-    const [classButton, setClassButton] = useState(
+const Li = ({ toDo, id, getTodos }) => {
+    const [button, setButton] = useState(
         "position-absolute top-50 end-0 translate-middle-y me-2 text-danger-emphasis d-none"
     );
 
@@ -15,23 +15,23 @@ const Li = ({ toDo, index, setListToDo, id }) => {
 		.then((response) => {
 			return response.json()
 		})
-		.then((data) => {console.log(data)})
+		.then((data) => {
+            getTodos()
+            console.log(data)
+            
+        })
 		.catch((err) => {err})
 
-    }
-    const borrado = () => {
-        setListToDo((list) => list.filter((_, indice) => indice !== index));
-       
-    };
+    }   
 
     const aparecer = () => {
-        setClassButton(
+        setButton(
             "bi bi-x-square position-absolute top-50 end-0 translate-middle-y me-3 text-danger-emphasis h5"
         );
     };
 
     const ocultar = () => {
-        setClassButton(
+        setButton(
             "bi bi-x-square position-absolute top-50 end-0 translate-middle-y me-3 text-danger-emphasis h5 d-none"
         );
     };
@@ -44,7 +44,7 @@ const Li = ({ toDo, index, setListToDo, id }) => {
         return (
             <li className="list-group-item" onMouseLeave={ocultar} onMouseOver={aparecer}>
                 <span>{toDo}</span>
-                <i className={classButton}
+                <i className={button}
                     onClick={
                         () => borrarTodo(id)                        
                     }>

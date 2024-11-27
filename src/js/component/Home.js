@@ -9,49 +9,54 @@ const Home = () => {
 
 	const [listTodo, setListTodo] = useState([])
 	const [newTodo, setNewTodo] = useState("")
-	
+
+	const getTodos = () => {
+		fetch("https://playground.4geeks.com/todo/users/javierR")
+			.then((response) => {
+				console.log(response)
+				return response.json()
+			})
+			.then((data) => {
+				console.log(data)
+				const arrayTodos = []
+				data.todos.forEach(element => {
+					console.log(element)
+					arrayTodos.push({ label: element.label, id: element.id })
+				});
+
+				setListTodo(arrayTodos)
+			})
+			.catch((err) => { err })
+	}
+
 	useEffect(
-		() =>{
-			fetch("https://playground.4geeks.com/todo/users/javierR")
-	.then((response) => {console.log(response)
-		return response.json()
-	})
-	.then((data) => {
-		console.log(data)
-		const arrayTodos = []
-		data.todos.forEach(element => {
-			console.log(element)
-			arrayTodos.push({ label : element.label, id : element.id})
-		});
-		
-		setListTodo(arrayTodos)
-	})
-	.catch((err) => {err})
+		() => { getTodos() }, []);
 
-		}, [newTodo]);
+	function postToDo(task) {
 
-	function postToDo(task){
-		
 		let data = {
 			"label": task,
 			"is_done": false
 		}
 
-		fetch("https://playground.4geeks.com/todo/todos/javierR",{
+		fetch("https://playground.4geeks.com/todo/todos/javierR", {
 			method: "POST",
 			body: JSON.stringify(data),
 			headers: {
 				'Content-Type': 'application/json'
 			}
 		})
-		.then((response) => {
-			return response.json()
-		})
-		.then((data) => {console.log(data)})
-		.catch((err) => {err})
-	}	
+			.then((response) => {
+				return response.json()
+			})
+			.then((data) => {
+				console.log(data)
+				getTodos()
+			})
+			.catch((err) => { err })
+	};
 
-	
+
 
 
 	return (
@@ -68,10 +73,7 @@ const Home = () => {
 							}}
 							onKeyUp={(e) => {
 								if (e.key === "Enter" && newTodo.length > 0) {
-
 									postToDo(newTodo)
-									
-									//setListTodo([...listTodo, newTodo])
 									setNewTodo("")
 								}
 							}}
@@ -83,8 +85,8 @@ const Home = () => {
 								<p className='text-danger-emphasis fw-bold'>No tasks yet, add one...</p>
 							</li>
 						) : (
-							listTodo.map((value, index) => (
-								<Li key={index} toDo={value.label} index={index} setListToDo={setListTodo} id={value.id} />
+							listTodo.map((value) => (
+								<Li key={value.id} toDo={value.label} getTodos={getTodos} id={value.id} />
 							))
 						)}
 						<li className="list-group-item">
